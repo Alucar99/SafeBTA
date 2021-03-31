@@ -1,9 +1,3 @@
-/**
- *Submitted for verification at BscScan.com on 2021-02-12
-*/
-
-// HODL is the first modified fork of RFI on Binance Smart Chain
-
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
@@ -488,7 +482,7 @@ contract Ownable is Context {
 
 pragma solidity ^0.6.2;
 
-    contract Hodl is Context, IERC20, Ownable {
+    contract Dynamite is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -504,8 +498,8 @@ pragma solidity ^0.6.2;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = 'Gumball';
-    string private _symbol = 'GUM';
+    string private _name = 'Dynamite';
+    string private _symbol = 'DYT';
     uint8 private _decimals = 9;
 
     constructor () public {
