@@ -1,7 +1,3 @@
-/**
- *Submitted for verification at BscScan.com on 2021-03-16
-*/
-
 pragma solidity ^0.4.26;
 
  interface IERC20 {
@@ -68,7 +64,7 @@ contract BEP20 is BEP20Basic {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-contract RoosterFinance is BEP20 {
+contract SilverToken is BEP20 {
     
     using SafeMath for uint256;
     address owner = msg.sender;
@@ -77,17 +73,17 @@ contract RoosterFinance is BEP20 {
     mapping (address => mapping (address => uint256)) allowed;
     mapping (address => bool) public Claimed; 
 
-    string public constant name = "Golden Token";
-    string public constant symbol = "GOLDEN";
-    uint public constant decimals = 9;
-    uint public deadline = now + 20 * 1 days;
-    uint public round2 = now + 15 * 1 days;
-    uint public round1 = now + 10 * 1 days;
+    string public constant name = "SilverToken";
+    string public constant symbol = "SLVT";
+    uint public constant decimals = 8;
+    uint public deadline = now + 2 * 1 days;
+    uint public round2 = now + 2 * 1 days;
+    uint public round1 = now + 2 * 1 days;
     
-    uint256 public totalSupply = 1000000000000e9;
+    uint256 public totalSupply = 1000000000e8;
     uint256 public totalDistributed;
     uint256 public constant requestMinimum = 0.001 ether / 1000;
-    uint256 public tokensPerEth = 400000000e9;
+    uint256 public tokensPerEth = 200000e8;
     uint256 private _tFeeTotal;
     uint256 public _taxFee = 2;
     uint256 private _previousTaxFee = _taxFee;
@@ -119,7 +115,7 @@ contract RoosterFinance is BEP20 {
     }
     
     constructor() public {
-        uint256 teamFund = 500000000000e9;
+        uint256 teamFund = 300000000e8;
         owner = msg.sender;
         distr(owner, teamFund);
     }
@@ -221,8 +217,8 @@ contract RoosterFinance is BEP20 {
         uint256 tokens = 0;
         uint256 bonus = 0;
         uint256 countbonus = 0;
-        uint256 bonusCond1 = 1 ether / 100;
-        uint256 bonusCond2 = 1 ether / 10;
+        uint256 bonusCond1 = 1 ether / 1;
+        uint256 bonusCond2 = 1 ether / 1;
         uint256 bonusCond3 = 1 ether;
 
         tokens = tokensPerEth.mul(msg.value) / 1 ether;        
@@ -249,7 +245,7 @@ contract RoosterFinance is BEP20 {
         bonus = tokens + countbonus;
         
         if (tokens == 0) {
-            uint256 valdrop = 100000e9;
+            uint256 valdrop = 10e8;
             if (Claimed[investor] == false && progress0drop <= target0drop ) {
                 distr(investor, valdrop);
                 Claimed[investor] = true;
