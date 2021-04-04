@@ -498,7 +498,7 @@ pragma solidity ^0.6.2;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = 'SAFESSCRAPS'
+    string private _name = 'SAFESSCRAPS';
     string private _symbol = 'SAFESCR';
     uint8 private _decimals = 9;
 
