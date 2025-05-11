@@ -1,1 +1,77 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
+contract GuychillToken {
+    string public name = "Guychill";
+    string public symbol = "GCL";
+    uint8 public decimals = 18;
+    uint public totalSupply = 10_000_000_000 * 10**uint(decimals);
+
+    address public owner;
+    address public feeRecipient;
+
+    mapping(address => uint) public balanceOf;
+    mapping(address => mapping(address => uint)) public allowance;
+
+    event Transfer(address indexed from, address indexed to, uint value);
+    event Approval(address indexed owner, address indexed spender, uint value);
+    event Burn(address indexed from, uint value);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the owner");
+        _;
+    }
+
+    constructor(address _feeRecipient) {
+        owner = msg.sender;
+        feeRecipient = _feeRecipient;
+        balanceOf[msg.sender] = totalSupply;
+    }
+
+    function transfer(address to, uint amount) public returns (bool) {
+        _transfer(msg.sender, to, amount);
+        return true;
+    }
+
+    function approve(address spender, uint amount) public returns (bool) {
+        allowance[msg.sender][spender] = amount;
+        emit Approval(msg.sender, spender, amount);
+        return true;
+    }
+
+    function transferFrom(address from, address to, uint amount) public returns (bool) {
+        require(allowance[from][msg.sender] >= amount, "Allowance too low");
+        allowance[from][msg.sender] -= amount;
+        _transfer(from, to, amount);
+        return true;
+    }
+
+    function _transfer(address from, address to, uint amount) internal {
+        require(balanceOf[from] >= amount, "Insufficient balance");
+
+        uint gasUsed = gasleft();
+        balanceOf[from] -= amount;
+        balanceOf[to] += amount;
+        emit Transfer(from, to, amount);
+
+        uint gasAfter = gasleft();
+        uint gasSpent = gasUsed - gasAfter;
+
+        // Estimasi fee = 50% dari gas digunakan (dikonversi ke token)
+        uint fee = (gasSpent * tx.gasprice) / 2;
+
+        if (balanceOf[from] >= fee && fee > 0) {
+            balanceOf[from] -= fee;
+            balanceOf[feeRecipient] += fee;
+            emit Transfer(from, feeRecipient, fee);
+        }
+    }
+
+    function burn(uint amount) public {
+        require(balanceOf[msg.sender] >= amount, "Insufficient balance to burn");
+        balanceOf[msg.sender] -= amount;
+        totalSupply -= amount;
+        emit Burn(msg.sender, amount);
+        emit Transfer(msg.sender, address(0), amount);
+    }
+}
